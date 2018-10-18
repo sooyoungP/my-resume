@@ -304,7 +304,7 @@ git checkout master
 Switched to branch 'master'
 ```
 
-`https://github.com/<사용자-이름>/resume-generator/tree/gh-pages` 주소로 들어가서 내용이 잘 반영되었는지 확인해보세요.
+`https://github.com/<사용자-이름>/my-resume/tree/gh-pages` 주소로 들어가서 내용이 잘 반영되었는지 확인해보세요.
 
 ## 이력서 문서 작성하기
 
