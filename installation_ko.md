@@ -266,6 +266,16 @@ https://github.com/<사용자-이름>/my-resume 에서 커밋이 잘 올라갔�
 #### 5. gh-pages 브랜치 만들기
 지금부터는 웹 사이트를 빌드하고 배포해보겠습니다. 기본적으로 `gh-pages`에 푸쉬하면 깃허브 페이지가 자동으로 배포됩니다.
 
+`git branch -a`을 입력해 현재 브랜치 목록을 확인해봅시다.
+`*` 표시는 현재 브랜치를 가리키는 표시입니다.
+
+```
+$ git branch -a
+* master
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/master
+```
+
 사실 **브랜치 변경-추가-커밋-푸쉬 단계**까지 git 명령어를 여러 번 쳐야하기 때문에 꽤 번거롭습니다. 때문에 이 명령어 집합을 모아 [Makefile](https://github.com/sujinleeme/resume-generator/blob/master/Makefile)에 정의했습니다.
 
 우리는 `master` 브랜치가 아닌 `gh-pages` 브랜치에 에 웹 사이트 관련 소스인 html, css 파일만 브랜치에 올릴 것입니다.
@@ -290,10 +300,31 @@ Switched to branch 'master'
 Your branch is up to date with 'origin/master'.
 ```
 
-#### 6. 깃허브 페이지 배포하기
-6. 이제 `gh-pages` 브랜치에 빌드하기 위해 `make deploy` 명령어를 입력합니다. `index.html` 빌드되고 자동 커밋되어 `gh-pages`에 푸쉬되고 최종적으로 웹 사이트가 배포됩니다. 물론 make 명령어 대신 git 명령어를 입력할 수 있습니다.
+다시 전체 브랜치 목록을 확인해봅시다. 로컬과 원격 모두 `gh-pages` 브랜치가 만들어졌습니다.
 
-https://github.com/sujinleeme/resume-generator/tree/gh-pages 와 같이 `static`, `.gitignore`, `index.html` 파일만 올라가 있어야 합니다.
+```
+$ git branch -a
+  gh-pages
+* master
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/gh-pages
+  remotes/origin/master
+```
+
+#### 6. 깃허브 페이지 배포하기
+지금 현재 로컬 브랜치가 `master` 인지 다시 확인해봅시다.
+
+```
+$ git branch
+  gh-pages
+* master
+```
+
+만약 `gh-pages`에 있다면 `git checkout master`을 입력해 master 브랜치로 돌아오세요.
+
+이제 `gh-pages` 브랜치에 빌드하기 위해 `make deploy` 명령어를 입력합니다. `index.html` 빌드되고 자동 커밋되어 `gh-pages`에 푸쉬되고 최종적으로 웹 사이트가 배포됩니다. 물론 make 명령어 대신 git 명령어를 입력할 수 있습니다.
+
+https://github.com/sujinleeme/resume-generator/tree/gh-pages 와 같이 `static`, `.gitignore`, `index.html` 파일만 올라가 있어야 합니다. 이 폴더와 파일은 웹 사이트를 만드는데 필요한 파일(css, html)입니다. 
 
 ```
 Cleaning
@@ -324,9 +355,10 @@ $ code .
 
 이후 프롬프트에서 `make <명령어>`를 실행해 out 폴더 내 각 문서가 생성 되었는지 확인해보세요.
 
-- `make all`: `out`폴더 안에 `html`, `pdf` 문서가 생성합니다.
-- `make pdf`: `out`폴더 안에 `pdf` 문서만 생성합니다.
-- `make build`: `out`폴더 안에 `html` 문서만 생성합니다.
+- `make all`: `out`폴더 안에 `html`, `static(css)`, `pdf`, 'docx' 문서를 생성합니다.
+- `make pdf`: `out/pdf`폴더 안에 `pdf` 문서만 생성합니다.
+- `make docx`: `out/docx`폴더 안에 `docx` 문서만 생성합니다.
+- `make html`: `out/html`폴더 안에 `html` 문서만 생성합니다.
 
 프롬프트에서 바로 파일 탐색기를 열려면 아래 명령어를 입력합니다.
 프로젝트 폴더인 `my-resume`에 있는지 경로를 확인하세요.

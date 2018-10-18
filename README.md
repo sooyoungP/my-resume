@@ -24,9 +24,11 @@
 - Replace `sig.png` with a copy of your signature (or comment that
   line out of `letter.md` if you do not want to include a signature
   image at the bottom of your cover letter)
-- Run `make all` to build the `html` and `pdf` output documents to
+- Run `make all` to build the `html`, `pdf`, `docx` output documents to
   the `out` directory
-- Run `make build` to build just the `html` documents
+- Run `make html` to build just the `html` documents
+- Run `make pdf` to build just the `pdf` documents
+- Run `make docx` to build just the `docx` documents
 - Run `make gh-pages` to create gh-pages in local and remote branches
 - Run `make deploy` to deploy `index.html(resume.html)` to gh-pages
 

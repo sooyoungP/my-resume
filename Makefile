@@ -1,9 +1,11 @@
 #!make
 CURRENT_BRANCH = $(shell git name-rev --name-only HEAD)
-OUPUT_DIR = out
+IN_DIR = content
+OUT_DIR = out
 STATIC_DIRS = static/ out/static/
-HTML_DIR = $(OUPUT_DIR)/html/
-PDF_DIR = $(OUPUT_DIR)/pdf/
+HTML_DIR = $(OUT_DIR)/html
+PDF_DIR = $(OUT_DIR)/pdf
+DOCX_DIR = $(OUT_DIR)/docx
 DEPLOY_BRANCH = gh-pages
 DEPLOY_DELETE_DIRS = out content bin templates
 DEPLOY_DELETE_FILES = Makefile README.md LICENSE.md installation_ko.md
@@ -34,22 +36,33 @@ else
 	DATE = $(shell date +%FT)
 endif
 
-all: build pdf
+all: html pdf docx
 
-build:
-	$(call mkdir, $(OUPUT_DIR))
+html:
+	$(call mkdir, $(OUT_DIR))
 	$(call cp, $(STATIC_DIRS))
-	$(call mkdir, ./$(HTML_DIR))
-	$(call makdir, ./$(PDF_DIR))
+	$(call mkdir, $(HTML_DIR))
+	for f in $(IN_DIR)/*.md; do \
+		FILE_NAME=`basename $$f | sed 's/.md//g'`; \
+		echo $$FILE_NAME.html; \
+		pandoc --section-divs -s $(IN_DIR)/$$FILE_NAME.md -H ./templates/header.html -c static/$$FILE_NAME.css -o ${HTML_DIR}/$$FILE_NAME.html; \
+	done
 
-	pandoc --section-divs -s ./content/resume.md -H ./templates/header.html -c static/resume.css -o ./${HTML_DIR}resume.html
-	pandoc --section-divs -s ./content/letter.md -H ./templates/header.html -c static/letter.css -o ./${HTML_DIR}letter.html
-	pandoc --section-divs -s ./content/references.md -H ./templates/header.html -c static/references.css -o ./${HTML_DIR}references.html
+docx:
+	$(call mkdir, $(DOCX_DIR))
+	for f in $(IN_DIR)/*.md; do \
+		FILE_NAME=`basename $$f | sed 's/.md//g'`; \
+		echo $$FILE_NAME.docx; \
+		pandoc --standalone $$SMART $$f --output $(DOCX_DIR)/$$FILE_NAME.docx; \
+	done
 
-pdf: build
-	phantomjs bin/rasterize.js ${HTML_DIR}resume.html ${PDF_DIR}resume.pdf 0.7
-	phantomjs bin/rasterize.js ${HTML_DIR}references.html ${PDF_DIR}references.pdf 0.8
-	phantomjs bin/rasterize.js ${HTML_DIR}letter.html ${PDF_DIR}letter.pdf 0.8
+pdf: html
+	$(call mkdir, ./$(PDF_DIR)/)
+	for f in $(IN_DIR)/*.md; do \
+		FILE_NAME=`basename $$f | sed 's/.md//g'`; \
+		echo $$FILE_NAME.pdf; \
+		phantomjs bin/rasterize.js ${HTML_DIR}/resume.html ${PDF_DIR}/$$FILE_NAME.pdf 0.7; \
+	done
 
 gh-pages:
 	git checkout -b ${DEPLOY_BRANCH}
@@ -60,7 +73,7 @@ del-gh-pages:
 	git push --delete origin ${DEPLOY_BRANCH}
 	git branch -D ${DEPLOY_BRANCH}
 
-deploy: build
+deploy: html
 	@echo "Cleaning $(BUILD_DIR)"
 	pandoc --section-divs -s ./content/resume.md -H ./templates/header.html -c static/resume.css -o index.html
 	git checkout ${DEPLOY_BRANCH}
@@ -79,4 +92,4 @@ commit: build
 	git push
 
 clean:
-	${rm} ${OUPUT_DIR}
+	${rm} ${OUT_DIR}
