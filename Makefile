@@ -2,7 +2,7 @@
 CURRENT_BRANCH = $(shell git name-rev --name-only HEAD)
 IN_DIR = content
 OUT_DIR = out
-STATIC_DIRS = static/ out/static/
+STATIC_DIRS = static/ out/html/static/
 HTML_DIR = $(OUT_DIR)/html
 PDF_DIR = $(OUT_DIR)/pdf
 DOCX_DIR = $(OUT_DIR)/docx
