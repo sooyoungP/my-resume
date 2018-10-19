@@ -1,5 +1,5 @@
 body {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
     margin: 0 auto;
     overflow: auto;
     padding: 25px 50px;
@@ -10,7 +10,7 @@ body {
 ul {
     color: #595959;
     float: left;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
     font-size: 1.0em;
     margin: 5px 0;
     padding-left: 0;
@@ -20,7 +20,7 @@ ul {
 p {
     color: #595959;
     float: left;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
     font-size: 1.0em;
     margin: 5px 0;
 }
